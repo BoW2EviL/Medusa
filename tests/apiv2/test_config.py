@@ -590,6 +590,11 @@ def config_notifiers():
     section_data['emby']['host'] = app.EMBY_HOST
     section_data['emby']['apiKey'] = app.EMBY_APIKEY
 
+    section_data['jellyfin'] = {}
+    section_data['jellyfin']['enabled'] = bool(app.USE_JELLYFIN)
+    section_data['jellyfin']['host'] = app.JELLYFIN_HOST
+    section_data['jellyfin']['apiKey'] = app.JELLYFIN_APIKEY
+
     section_data['nmj'] = {}
     section_data['nmj']['enabled'] = bool(app.USE_NMJ)
     section_data['nmj']['host'] = app.NMJ_HOST

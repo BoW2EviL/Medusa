@@ -50,6 +50,7 @@
                             <li v-if="linkVisible.plex"><a href="home/updatePLEX/" @click.prevent="updatePlex"><i class="menu-icon-plex" />&nbsp;Update PLEX</a></li>
                             <li v-if="linkVisible.kodi"><a href="home/updateKODI/" @click.prevent="updateKodi"><i class="menu-icon-kodi" />&nbsp;Update KODI</a></li>
                             <li v-if="linkVisible.emby"><a href="home/updateEMBY/" @click.prevent="updateEmby"><i class="menu-icon-emby" />&nbsp;Update Emby</a></li>
+                            <li v-if="linkVisible.jellyfin"><a href="home/updateJELLYFIN/" @click.prevent="updateJellyfin"><i class="menu-icon-jellyfin" />&nbsp;Update Jellyfin</a></li>
                             <!-- Avoid mixed content blocking by open manage torrent in new tab -->
                             <li v-if="linkVisible.manageTorrents"><app-link href="manage/manageTorrents/" target="_blank"><i class="menu-icon-bittorrent" />&nbsp;Manage Torrents</app-link></li>
                             <li v-if="linkVisible.failedDownloads"><app-link href="manage/failedDownloads/"><i class="menu-icon-failed-download" />&nbsp;Failed Downloads</app-link></li>
@@ -172,7 +173,7 @@ export default {
         linkVisible() {
             const { clients, notifiers, search, subtitles } = this;
             const { general } = search;
-            const { kodi, plex, emby } = notifiers;
+            const { kodi, plex, emby, jellyfin } = notifiers;
 
             return {
                 plex: plex.server.enabled && plex.server.host.length !== 0,
@@ -180,6 +181,7 @@ export default {
                 /* @TODO: Originally there was a check to make sure the API key
                    was configured for Emby: ` app.EMBY_APIKEY != '' ` */
                 emby: emby.enabled && emby.host,
+                jellyfin: jellyfin.enabled && jellyfin.host,
                 manageTorrents: clients.torrents.enabled && clients.torrents.method !== 'blackhole',
                 failedDownloads: general.failedDownloads.enabled,
                 subtitleMissed: subtitles.enabled
@@ -292,6 +294,16 @@ export default {
             } catch (error) {
                 this.$snotify.info(
                     'Error trying to update emby'
+                );
+            }
+        },
+        async updateJellyfin() {
+            const { client } = this;
+            try {
+                await client.api.post('notifications/jellyfin/update');
+            } catch (error) {
+                this.$snotify.info(
+                    'Error trying to update jellyfin'
                 );
             }
         },

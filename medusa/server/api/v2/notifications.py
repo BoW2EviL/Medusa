@@ -38,7 +38,7 @@ class NotificationsHandler(BaseRequestHandler):
             return self._bad_request('You must provide a notifications resource name')
 
         available_resources = (
-            'kodi', 'plexserver', 'plexhome', 'emby', 'nmj', 'nmjv2', 'trakt', 'plex'
+            'kodi', 'plexserver', 'plexhome', 'emby', 'jellyfin', 'nmj', 'nmjv2', 'trakt', 'plex'
         )
 
         if resource not in available_resources:
@@ -87,6 +87,27 @@ class NotificationsHandler(BaseRequestHandler):
             ui.notifications.message(f'Library update command sent to Emby host: {app.EMBY_HOST}')
         else:
             ui.notifications.error(f'Unable to contact Emby host: {app.EMBY_HOST}')
+
+        return self._created()
+
+    def jellyfin_update(self):
+        """Update jellyfin's show library."""
+        show_slug = self.get_argument('showslug', '')
+        show = None
+
+        if show_slug:
+            show_identifier = SeriesIdentifier.from_slug(show_slug)
+            if not show_identifier:
+                return self._bad_request('Invalid show slug')
+
+            show = Series.find_by_identifier(show_identifier)
+            if not show:
+                return self._not_found('Series not found')
+
+        if notifiers.jellyfin_notifier.update_library(show):
+            ui.notifications.message(f'Library update command sent to Jellyfin host: {app.JELLYFIN_HOST}')
+        else:
+            ui.notifications.error(f'Unable to contact Jellyfin host: {app.JELLYFIN_HOST}')
 
         return self._created()
 

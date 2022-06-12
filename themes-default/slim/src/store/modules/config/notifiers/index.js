@@ -3,6 +3,7 @@ import boxcar2 from './boxcar2';
 import discord from './discord';
 import email from './email';
 import emby from './emby';
+import jellyfin from './jellyfin';
 import freemobile from './freemobile';
 import growl from './growl';
 import kodi from './kodi';
@@ -42,6 +43,7 @@ const modules = {
     discord,
     email,
     emby,
+    jellyfin,
     freemobile,
     growl,
     kodi,

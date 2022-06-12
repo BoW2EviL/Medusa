@@ -174,6 +174,28 @@
 
                             <div class="row component-group">
                                 <div class="component-group-desc col-xs-12 col-md-2">
+                                    <span class="icon-notifiers-jellyfin" title="Jellyfin" />
+                                    <h3><app-link href="http://jellyfin.media">Jellyfin</app-link></h3>
+                                    <p>A home media server built using other popular open source technologies.</p>
+                                </div>
+                                <div class="col-xs-12 col-md-10">
+                                    <fieldset class="component-group-list">
+                                        <!-- All form components here for jellyfin -->
+                                        <config-toggle-slider v-model="notifiers.jellyfin.enabled" label="Enable" id="use_jellyfin" :explanations="['Send update commands to Jellyfin?']" @change="save()" />
+
+                                        <div v-show="notifiers.jellyfin.enabled" id="content_use_jellyfin">
+                                            <config-textbox v-model="notifiers.jellyfin.host" label="Jellyfin IP:Port" id="jellyfin_host" :explanations="['host running Jellyfin (eg. 192.168.1.100:8096)']" @change="save()" />
+                                            <config-textbox v-model="notifiers.jellyfin.apiKey" label="Api Key" id="jellyfin_apikey" @change="save()" />
+
+                                            <div class="testNotification" id="testJELLYFIN-result">Click below to test.</div>
+                                            <input class="btn-medusa" type="button" value="Test Jellyfin" id="testJELLYFIN" @click="testJELLYFIN">
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+
+                            <div class="row component-group">
+                                <div class="component-group-desc col-xs-12 col-md-2">
                                     <span class="icon-notifiers-nmj" title="Networked Media Jukebox" />
                                     <h3><app-link href="http://www.popcornhour.com/">NMJ</app-link></h3>
                                     <p>The Networked Media Jukebox, or NMJ, is the official media jukebox interface made available for the Popcorn Hour 200-series.</p>
@@ -1383,6 +1405,27 @@ export default {
             }).done(data => {
                 $('#testEMBY-result').html(data);
                 $('#testEMBY').prop('disabled', false);
+            });
+        },
+        testJELLYFIN() {
+            const jellyfin = {};
+            jellyfin.host = $('#jellyfin_host').val();
+            jellyfin.apikey = $('#jellyfin_apikey').val();
+            if (!jellyfin.host || !jellyfin.apikey) {
+                $('#testJELLYFIN-result').html('Please fill out the necessary fields above.');
+                $('#jellyfin_host').addRemoveWarningClass(jellyfin.host);
+                $('#jellyfin_apikey').addRemoveWarningClass(jellyfin.apikey);
+                return;
+            }
+            $('#jellyfin_host,#jellyfin_apikey').children('input').removeClass('warning');
+            $(this).prop('disabled', true);
+            $('#testJELLYFIN-result').html(MEDUSA.config.layout.loading);
+            $.get('home/testJELLYFIN', {
+                host: jellyfin.host,
+                jellyfin_apikey: jellyfin.apikey // eslint-disable-line camelcase
+            }).done(data => {
+                $('#testJELLYFIN-result').html(data);
+                $('#testJELLYFIN').prop('disabled', false);
             });
         },
         testBoxcar2() {

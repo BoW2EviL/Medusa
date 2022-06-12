@@ -41,6 +41,7 @@ class ConfigNotifications(Config):
                           plex_server_host=None, plex_server_token=None, plex_client_host=None, plex_server_username=None, plex_server_password=None,
                           use_plex_client=None, plex_client_username=None, plex_client_password=None,
                           plex_server_https=None, use_emby=None, emby_host=None, emby_apikey=None,
+                          use_jellyfin=None, jellyfin_host=None, jellyfin_apikey=None,
                           use_growl=None, growl_notify_onsnatch=None, growl_notify_ondownload=None,
                           growl_notify_onsubtitledownload=None, growl_host=None, growl_password=None,
                           use_freemobile=None, freemobile_notify_onsnatch=None, freemobile_notify_ondownload=None,
@@ -122,6 +123,10 @@ class ConfigNotifications(Config):
         app.USE_EMBY = config.checkbox_to_value(use_emby)
         app.EMBY_HOST = config.clean_host(emby_host)
         app.EMBY_APIKEY = emby_apikey
+
+        app.USE_JELLYFIN = config.checkbox_to_value(use_jellyfin)
+        app.JELLYFIN_HOST = config.clean_host(jellyfin_host)
+        app.JELLYFIN_APIKEY = jellyfin_apikey
 
         app.USE_GROWL = config.checkbox_to_value(use_growl)
         app.GROWL_NOTIFY_ONSNATCH = config.checkbox_to_value(growl_notify_onsnatch)

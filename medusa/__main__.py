@@ -445,7 +445,7 @@ class Application(object):
                 return False
 
             sections = [
-                'General', 'Blackhole', 'Newzbin', 'SABnzbd', 'NZBget', 'KODI', 'PLEX', 'Emby', 'Growl', 'Prowl', 'Twitter',
+                'General', 'Blackhole', 'Newzbin', 'SABnzbd', 'NZBget', 'KODI', 'PLEX', 'Emby', 'Jellyfin', 'Growl', 'Prowl', 'Twitter',
                 'Boxcar2', 'NMJ', 'NMJv2', 'Synology', 'Slack', 'SynologyNotifier', 'pyTivo', 'Pushalot', 'Pushbullet', 'Join',
                 'Subtitles', 'pyTivo',
             ]
@@ -777,6 +777,10 @@ class Application(object):
             app.USE_EMBY = bool(check_setting_int(app.CFG, 'Emby', 'use_emby', 0))
             app.EMBY_HOST = check_setting_str(app.CFG, 'Emby', 'emby_host', '', censor_log='high')
             app.EMBY_APIKEY = check_setting_str(app.CFG, 'Emby', 'emby_apikey', '', censor_log='low')
+
+            app.USE_JELLYFIN = bool(check_setting_int(app.CFG, 'Jellyfin', 'use_jellyfin', 0))
+            app.JELLYFIN_HOST = check_setting_str(app.CFG, 'Jellyfin', 'jellyfin_host', '', censor_log='high')
+            app.JELLYFIN_APIKEY = check_setting_str(app.CFG, 'Jellyfin', 'jellyfin_apikey', '', censor_log='low')
 
             app.USE_GROWL = bool(check_setting_int(app.CFG, 'Growl', 'use_growl', 0))
             app.GROWL_NOTIFY_ONSNATCH = bool(check_setting_int(app.CFG, 'Growl', 'growl_notify_onsnatch', 0))
@@ -1897,6 +1901,11 @@ class Application(object):
         new_config['Emby']['use_emby'] = int(app.USE_EMBY)
         new_config['Emby']['emby_host'] = app.EMBY_HOST
         new_config['Emby']['emby_apikey'] = app.EMBY_APIKEY
+
+        new_config['Jellyfin'] = {}
+        new_config['Jellyfin']['use_jellyfin'] = int(app.USE_JELLYFIN)
+        new_config['Jellyfin']['jellyfin_host'] = app.JELLYFIN_HOST
+        new_config['Jellyfin']['jellyfin_apikey'] = app.JELLYFIN_APIKEY
 
         new_config['Growl'] = {}
         new_config['Growl']['use_growl'] = int(app.USE_GROWL)

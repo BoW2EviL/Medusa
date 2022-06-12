@@ -1089,6 +1089,11 @@
                     "host": "",
                     "apiKey": ""
                 },
+                "jellyfin": {
+                    "enabled": false,
+                    "host": "",
+                    "apiKey": ""
+                },
                 "nmj": {
                     "enabled": false,
                     "host": "",

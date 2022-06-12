@@ -296,6 +296,15 @@ class Home(WebRoot):
             return 'Test notice failed to {host}'.format(host=unquote_plus(host))
 
     @staticmethod
+    def testJELLYFIN(host=None, jellyfin_apikey=None):
+        host = config.clean_host(host)
+        result = notifiers.jellyfin_notifier.test_notify(unquote_plus(host), jellyfin_apikey)
+        if result:
+            return 'Test notice sent successfully to {host}'.format(host=unquote_plus(host))
+        else:
+            return 'Test notice failed to {host}'.format(host=unquote_plus(host))
+
+    @staticmethod
     def testNMJ(host=None, database=None, mount=None):
         host = config.clean_host(host)
         result = notifiers.nmj_notifier.test_notify(unquote_plus(host), database, mount)
@@ -756,6 +765,24 @@ class Home(WebRoot):
             app.show_queue_scheduler.action.updateShow(series_obj)
         except CantUpdateShowException as e:
             ui.notifications.error('Unable to update this show.', ex(e))
+
+        # just give it some time
+        time.sleep(cpu_presets[app.CPU_PRESET])
+
+        return self.redirect('/home/displayShow?showslug={series_obj.slug}'.format(series_obj=series_obj))
+
+    def updateJELLYFIN(self, showslug=None):
+
+        # @TODO: Replace with status=update or status=updating from PATCH /api/v2/show/{id}
+        if showslug is None:
+            series_obj = None
+        else:
+            identifier = SeriesIdentifier.from_slug(showslug)
+            series_obj = Series.find_by_identifier(identifier)
+        result = notifiers.jellyfin_notifier.update_library( show=series_obj )
+        if not result:
+            return self._genericMessage('Error', 'Unable to update Jellyfin Libary')
+
 
         # just give it some time
         time.sleep(cpu_presets[app.CPU_PRESET])

@@ -1327,6 +1327,8 @@ class PostProcessor(object):
         notifiers.plex_notifier.update_library(ep_obj)
         # do the library update for EMBY
         notifiers.emby_notifier.update_library(ep_obj.series)
+        # do the library update for JELLYFIN
+        notifiers.jellyfin_notifier.update_library(ep_obj.series)
         # do the library update for NMJ
         # nmj_notifier kicks off its library update when the notify_download is issued (inside notifiers)
         # do the library update for Synology Indexer

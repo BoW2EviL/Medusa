@@ -413,6 +413,10 @@ class MedusaApp(object):
         self.EMBY_HOST = None
         self.EMBY_APIKEY = None
 
+        self.USE_JELLYFIN = False
+        self.JELLYFIN_HOST = None
+        self.JELLYFIN_APIKEY = None
+
         self.USE_GROWL = False
         self.GROWL_NOTIFY_ONSNATCH = False
         self.GROWL_NOTIFY_ONDOWNLOAD = False

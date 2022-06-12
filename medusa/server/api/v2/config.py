@@ -106,6 +106,7 @@ class ConfigHandler(BaseRequestHandler):
         'showDefaults.showLists': ListField(app, 'SHOWLISTS_DEFAULT'),
         'anonRedirect': StringField(app, 'ANON_REDIRECT'),
         'emby.enabled': BooleanField(app, 'USE_EMBY'),
+        'jellyfin.enabled': BooleanField(app, 'USE_JELLYFIN'),
 
         'launchBrowser': BooleanField(app, 'LAUNCH_BROWSER'),
         'defaultPage': StringField(app, 'DEFAULT_PAGE'),
@@ -339,6 +340,10 @@ class ConfigHandler(BaseRequestHandler):
         'notifiers.emby.enabled': BooleanField(app, 'USE_EMBY'),
         'notifiers.emby.host': StringField(app, 'EMBY_HOST'),
         'notifiers.emby.apiKey': StringField(app, 'EMBY_APIKEY'),
+
+        'notifiers.jellyfin.enabled': BooleanField(app, 'USE_JELLYFIN'),
+        'notifiers.jellyfin.host': StringField(app, 'JELLYFIN_HOST'),
+        'notifiers.jellyfin.apiKey': StringField(app, 'JELLYFIN_APIKEY'),
 
         'notifiers.nmj.enabled': BooleanField(app, 'USE_NMJ'),
         'notifiers.nmj.host': StringField(app, 'NMJ_HOST'),
@@ -948,6 +953,11 @@ class DataGenerator(object):
         section_data['emby']['enabled'] = bool(app.USE_EMBY)
         section_data['emby']['host'] = app.EMBY_HOST
         section_data['emby']['apiKey'] = app.EMBY_APIKEY
+
+        section_data['jellyfin'] = {}
+        section_data['jellyfin']['enabled'] = bool(app.USE_JELLYFIN)
+        section_data['jellyfin']['host'] = app.JELLYFIN_HOST
+        section_data['jellyfin']['apiKey'] = app.JELLYFIN_APIKEY
 
         section_data['nmj'] = {}
         section_data['nmj']['enabled'] = bool(app.USE_NMJ)

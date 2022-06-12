@@ -118,6 +118,12 @@ export const showSubMenu = vm => {
                 icon: 'menu-icon-emby'
             },
             {
+                title: 'Update show in Jellyfin',
+                path: `home/updateJELLYFIN?showslug=${showSlug}`,
+                requires: notifiers.jellyfin.enabled,
+                icon: 'menu-icon-jellyfin'
+            },
+            {
                 title: 'Preview Rename',
                 path: `home/testRename?showslug=${showSlug}`,
                 icon: 'ui-icon ui-icon-tag'
